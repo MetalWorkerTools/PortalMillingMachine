@@ -1,0 +1,234 @@
+# Run these commands at the serial terminal (fluidterm)
+# press Ctrl U and upload the <FluidNC\example_configs\MKS_TinyBee_XYYZ.yaml> configuration file
+# set the configuration filename by the next command
+# $Config/Filename=MKS_TinyBee_XYYZ.yaml
+# Reboot board
+# run next commands to setup sta mode, ssid, password, hostname
+# $WiFi/Mode=STA
+# $Sta/SSID=YourWiFiRouterSSD
+# $Sta/Password=YourWiFiRouterPassword
+# $Hostname=YourMachineName
+# Reboot board, in the serial terminal you will see the boot messages
+
+#usefull commands:
+# $Startup/Show     shows the startup messages
+# $Limits           show the limit switch status realtime
+# $NVX              erase settings. Do this to ensure only config file settings are used
+# Current range X Y Z: 140 240 120
+
+board: MKS TinyBee V1.0
+name: Router XYYZ
+meta: (28.07.2023) by MetalWorkerTools
+
+kinematics:
+  Cartesian:
+
+stepping:
+  engine: I2S_STATIC
+  idle_ms: 0
+  pulse_us: 4
+  dir_delay_us: 1
+  disable_delay_us: 0
+
+axes:
+  #default pin = high
+  # X  
+  x:
+    steps_per_mm: 800
+    max_rate_mm_per_min: 700.000
+    acceleration_mm_per_sec2: 100.000
+    max_travel_mm: 141.000
+    soft_limits: true
+    homing:
+      cycle: 3
+      positive_direction: false
+      mpos_mm: 0.000
+      feed_mm_per_min: 250.000
+      seek_mm_per_min: 700.000
+      settle_ms: 500
+      seek_scaler: 1.100
+      feed_scaler: 1.100
+    #Motor X, CN=X
+    motor0:
+      limit_neg_pin: gpio.33:low:pd
+      hard_limits: true
+      pulloff_mm: 1.000
+      stepstick:
+        step_pin: I2SO.1
+        direction_pin: I2SO.2:low
+        disable_pin: I2SO.0
+
+  y:
+    # Y
+    steps_per_mm: 800
+    max_rate_mm_per_min: 700.000
+    acceleration_mm_per_sec2: 100.000
+    max_travel_mm: 241.000
+    soft_limits: true
+    homing:
+      cycle: 2
+      positive_direction: true
+      mpos_mm: 0.000
+      feed_mm_per_min: 250.000
+      seek_mm_per_min: 700.000
+      settle_ms: 500
+      seek_scaler: 1.100
+      feed_scaler: 1.100
+     #Motor Y1, CN=Y
+    motor0:
+      limit_neg_pin: gpio.32:low:pu
+      hard_limits: true
+      pulloff_mm: 1.000
+      stepstick:
+        step_pin: I2SO.4
+        direction_pin: I2SO.5
+        disable_pin: I2SO.3
+    #Motor Y2, CN=E1
+    motor1:
+      limit_neg_pin: gpio.35:low:pu
+      # hard_limits: true
+      pulloff_mm: 1.000
+      stepstick:
+        step_pin: I2SO.10
+        direction_pin: I2SO.11
+        disable_pin: I2SO.9
+
+  z:
+    # Z
+    steps_per_mm: 800
+    max_rate_mm_per_min: 700.000
+    acceleration_mm_per_sec2: 150.000
+    max_travel_mm: 120.000
+    soft_limits: true
+    homing:
+      cycle: 1
+      positive_direction: true
+      mpos_mm: 0.000
+      feed_mm_per_min: 250.000
+      seek_mm_per_min: 700.000
+      settle_ms: 500
+      seek_scaler: 1.100
+      feed_scaler: 1.100
+    #Motor Z, CN=Z
+    motor0:
+      limit_pos_pin: gpio.22:low:pu
+      hard_limits: true
+      pulloff_mm: 1.000
+      stepstick:
+        step_pin: I2SO.7
+        direction_pin: I2SO.8:low
+        disable_pin: I2SO.6
+
+i2so:
+  bck_pin: gpio.25
+  data_pin: gpio.27
+  ws_pin: gpio.26
+
+spi:
+  miso_pin: gpio.19
+  mosi_pin: gpio.23
+  sck_pin: gpio.18
+
+# sdcard:
+#   cs_pin: gpio.5
+#   card_detect_pin: NO_PIN
+
+control:
+  estop_pin: gpio.36
+  safety_door_pin: NO_PIN
+  reset_pin: NO_PIN
+  feed_hold_pin: NO_PIN
+  cycle_start_pin: NO_PIN
+  # EXP1 BTN_ENC
+  # macro0_pin: gpio.4:low:pu
+  macro0_pin: NO_PIN
+  macro1_pin: NO_PIN
+  macro2_pin: NO_PIN
+  macro3_pin: NO_PIN
+
+
+macros:
+  startup_line0:
+  startup_line1:
+  macro0: $LocalFs/Run=Macro0.gcode
+  macro1: 
+  macro2:
+  macro3:
+
+coolant:
+  flood_pin: NO_PIN
+  mist_pin: NO_PIN
+  delay_ms: 0
+
+probe:
+  # TB input
+  # tested OK
+  pin: gpio.39:low
+  # Warning: 3Dtouch connector Pinout differs from limit switches 1=signal 2=5V 3+GND, gpio.2 doesn't work as input 
+  toolsetter_pin: NO_PIN
+  
+
+  check_mode_start: true
+
+user_outputs:
+  analog0_pin: NO_PIN
+  analog1_pin: NO_PIN
+  analog2_pin: NO_PIN
+  analog3_pin: NO_PIN
+  analog0_hz: 5000
+  analog1_hz: 5000
+  analog2_hz: 5000
+  analog3_hz: 5000
+  digital0_pin: NO_PIN
+  digital1_pin: NO_PIN
+  digital2_pin: NO_PIN
+  digital3_pin: NO_PIN
+
+start:
+  must_home: false
+# # Spindle disabled because it is not connected at the moment  
+# # spindle PWM signal
+# PWM:
+#   pwm_hz: 2500
+#   # on EXP1 IO15 connector.
+#   # note IO15 will give some short pulses on boot, which may activate spindle
+#   # use IO17 on EXP1 to avoid
+#   output_pin: gpio.15:high
+#   s0_with_disable: true
+#   tool_num: 0
+#   spinup_ms: 4000
+#   spindown_ms: 4000
+#   speed_map: 0=0.000% 12000=100.000%
+
+# Oled disabled because it is not connected at the moment
+# i2c0:
+#    sda_pin: gpio.14
+#    scl_pin: gpio.13
+
+# oled:
+#    i2c_num: 0
+#    i2c_address: 60
+#    width: 128
+#    height: 64
+#    radio_delay_ms: 1000
+
+# oled I2 connection:
+# Warning, connector housing on the tinybee board is wrong, rotated 180°. Pin 1 mark (square solder pad) is OK.
+# Tested using 128x64 SDD1306 LCD
+# EXP1-2 = SCL
+# EXP2-3 = SDA
+# EXP2-9 = VCC (3v3)
+# EXP2-10 = GND
+
+ # USB  TX0(1)  RX0(3)
+ # J3-> TX2(17) RX2(16)
+ # J1-> I2SO.23 I2SO.22
+ # TH1(36)        TH2(34)        THB(39)
+ # HE0(I2SO.17)   HE1(I2SO.18)   HBED(I2SO.16)
+ # FAN1(I2SO.19)  FAN2(I2SO.20)
+ #                   EXP1                                   EXP2
+ #(BEEPER) I2SO.21 | 1  2 | 13 (BTN_ENC)    (SPI MISO) 19 | 1  2 | 18 (SPI SCK)
+ #    (LCD_EN)  21 | 3  4 |  4 (LCD_RS)      (BTN_EN1) 14 | 3  4 |  5 (SPI CS)
+ #    (LCD_D4)   0 | 5  6   16 (LCD_D5)      (BTN_EN2) 12 | 5  6   23 (SPI MOSI)
+ #    (LCD_D6)  15 | 7  8 | 17 (LCD_D7)      (SPI_DET) 34 | 7  8 | RESET
+ #             GND | 9 10 | 5V                        GND | 9 10 | 3.3V
