@@ -9,7 +9,7 @@ Backlash on all axis is somewhere between 0.01 and 0.03 mm.
 I can adjust all axis to 0.02 mm / 100 mm.
 The repeatability on all axis is better than 0.01 mm. (That is not the same as accuracy).
 Without measuring, steel parts are within 0.1 mm. I haven't completed all tests but I expect that I can mill steel parts within 0.03 mm.
-The self made 3000 RPM ER16 spindle is realy quit when milling. Because it is made from aluminium extrusion, it makes more noise than the manual mill under the same conditions.
+The self made 3000 RPM ER16 spindle is realy quit when milling. Because the frame is is made from aluminium extrusion, it makes more noise than the manual mill under the same conditions.
 The weight is about 55 kg.
 
 For the next project I am going to CNC a manual mill that all ready has ball screws on the X and Y axis for more rigidity and lesser noise.
